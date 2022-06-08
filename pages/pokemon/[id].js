@@ -3,7 +3,7 @@ import Head from "next/head";
 import styles from "../../styles/Home.module.css";
 import Link from "next/link";
 
-export async function getServerSideProps({ params }) {
+export async function getStaticProps({ params }) {
   const response = await fetch(
     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params.id}.json`
   );
