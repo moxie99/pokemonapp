@@ -4,18 +4,17 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 
-export default function Home() {
-  const [pokemon, setPokemon] = useState([]);
-
-  useEffect(() => {
-    async function getPokemon() {
-      const response = await fetch(
+export async function getServerSideProps(){
+  const response = await fetch(
         "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
       );
-      setPokemon(await response.json());
-    }
-    getPokemon();
-  }, []);
+      return {
+        props:{
+         pokemon: await response.json(),
+        }
+      }
+}
+export default function Home({pokemon}) {
   return (
     <div className={styles.container}>
       <Head>
@@ -24,8 +23,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={styles.grid}>
         <h1>List of Pokemon</h1>
+      <div className={styles.grid}>
        {
         pokemon.map((pokemon) => (
           <div className={styles.card} key={pokemon.id}>
