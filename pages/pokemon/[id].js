@@ -3,6 +3,20 @@ import Head from "next/head";
 import styles from "../../styles/Home.module.css";
 import Link from "next/link";
 
+//function to specify all paths to be built at build time
+export async function getStaticPaths() {
+  const response = await fetch(
+    "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
+  );
+  const pokemon = await response.json();
+  return {
+    paths: pokemon.map((pokemon) => ({
+      params: { id: pokemon.id.toString() },
+    })),
+    fallback: false,
+  };
+}
+
 export async function getStaticProps({ params }) {
   const response = await fetch(
     `https://jherr-pokemon.s3.us-west-1.amazonaws.com/pokemon/${params.id}.json`
